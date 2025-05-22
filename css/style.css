@@ -1,0 +1,220 @@
+/* Styles de base pour le fond de l'application */
+.root {
+    -fx-padding: 15;
+    -fx-background-color: aliceblue;
+}
+
+/* Styles généraux pour les labels */
+.label {
+    -fx-text-fill: #4682b4;
+    -fx-font-size: 1.2em;
+}
+
+/* Style pour le label de la date du jour */
+#today {
+    -fx-text-fill: coral;
+}
+
+/* Style pour les boutons du jour actuel dans le calendrier */
+#boutonCalendrierToday {
+    -fx-text-fill: #2B506E;
+    -fx-font-weight: bolder;
+}
+
+/* Style pour les labels simples (heures, minutes) */
+#simple {
+    -fx-text-fill: black;
+    -fx-font-size: 1em;
+}
+
+/* Style pour les boutons de navigation du calendrier (<, >, <<, >>) */
+#bouton {
+    -fx-border-color: #4682b4;
+    -fx-font-weight: bold;
+    -fx-background-color: white;
+    /* Amélioration de l'accessibilité */
+    -fx-text-fill: #2B506E;
+}
+
+/* Style de focus pour les boutons de navigation */
+#bouton:focused {
+    -fx-border-color: #2B8DE0;
+    -fx-border-width: 2px;
+    -fx-effect: dropshadow(three-pass-box, rgba(43, 141, 224, 0.5), 5, 0, 0, 0);
+    -fx-border-insets: -1; /* Compenser la bordure plus large */
+}
+
+/* Style pour les boutons standards (Annuler, Valider) */
+.button {
+    -fx-border-color: #4682b4;
+    -fx-font-weight: bold;
+    -fx-background-color: white;
+    /* Amélioration de l'accessibilité */
+    -fx-text-fill: #2B506E;
+}
+
+/* Style de focus pour les boutons standards */
+.button:focused {
+    -fx-border-color: #2B8DE0;
+    -fx-border-width: 2px;
+    -fx-effect: dropshadow(three-pass-box, rgba(43, 141, 224, 0.5), 5, 0, 0, 0);
+    -fx-border-insets: -1; /* Compenser la bordure plus large */
+}
+
+/* Style pour les toggle-buttons (boutons du calendrier) */
+.toggle-button {
+    -fx-background-color: white;
+    /* Amélioration de l'accessibilité */
+    -fx-text-fill: #2B506E;
+    -fx-border-color: #4682b4;
+    /* Uniformité des boutons dans le TilePane */
+    -fx-min-width: 30px;
+    -fx-min-height: 30px;
+    -fx-pref-width: 30px;
+    -fx-pref-height: 30px;
+    -fx-max-width: 30px;
+    -fx-max-height: 30px;
+    -fx-padding: 5px;
+    -fx-alignment: center;
+}
+
+/* Style pour les toggle-buttons sélectionnés */
+.toggle-button:selected {
+    -fx-background-color: coral;
+    -fx-text-fill: white;
+}
+
+/* Style de focus pour les toggle-buttons */
+.toggle-button:focused {
+    -fx-border-color: #2B8DE0;
+    -fx-border-width: 2px;
+    -fx-effect: dropshadow(three-pass-box, rgba(43, 141, 224, 0.5), 5, 0, 0, 0);
+    -fx-border-insets: -1; /* Compenser la bordure plus large */
+}
+
+/* Style pour la grille du formulaire */
+.gridPane {
+    -fx-background-color: white;
+    -fx-border-width: 1px;
+    -fx-border-color: #4682b4;
+}
+
+/* Style pour les boutons radio */
+.radio-button {
+    -fx-background-color: aliceblue;
+}
+
+/* Style pour les boutons radio sélectionnés */
+.radio-button:selected .radio .dot {
+    -fx-background-color: coral;
+    -fx-background-insets: 0;
+}
+
+/* Style pour les combo-box et champs texte */
+.combo-box, .text-field {
+    -fx-border-width: 1px;
+    -fx-border-color: #2B506E;
+    -fx-padding: 2px;
+}
+
+/* Style de focus pour les combo-box, champs texte et boutons radio */
+.combo-box:focused, .text-field:focused, .radio-button:focused {
+    -fx-border-color: #2B8DE0;
+    -fx-border-width: 2px;
+    -fx-effect: dropshadow(three-pass-box, rgba(43, 141, 224, 0.5), 5, 0, 0, 0);
+    -fx-border-insets: -1; /* Compenser la bordure plus large */
+}
+
+/* Style pour le fond blanc (utilisé dans le TilePane du calendrier) */
+#opaque {
+    -fx-background-color: white;
+}
+
+/* Style pour le scroll-pane */
+.scroll-pane {
+    -fx-background: ghostwhite;
+    -fx-border-color: #5F9EA0;
+}
+
+/* Style spécifique pour les boutons dans le TilePane (calendrier) */
+#opaque .toggle-button {
+    -fx-background-radius: 0;
+    -fx-border-width: 1px;
+    -fx-border-radius: 0;
+}
+
+/* Style pour les labels des jours de la semaine dans le TilePane */
+#opaque .label {
+    -fx-alignment: center;
+    -fx-min-width: 30px;
+    -fx-pref-width: 30px;
+    -fx-max-width: 30px;
+}
+
+/* Style pour le popup informatif de réservation faite*/
+.popup-text {
+    -fx-background-color: white;
+    -fx-border-color: #4682b4;
+    -fx-border-radius: 5;
+    -fx-padding: 10;
+    -fx-font-size: 14px;
+    -fx-text-fill: #4682b4;
+    -fx-font-weight: 800;
+}
+
+.planning-table {
+    -fx-background-color: #f5f8ff;
+    -fx-border-color: #cccccc;
+    -fx-border-width: 1px;
+}
+
+.planning-table .column-header {
+    -fx-background-color: #4a7fb5;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 5px;
+    -fx-border-color: #cccccc;
+    -fx-border-width: 0 1px 1px 0;
+    -fx-alignment: center;
+}
+
+.planning-table .table-row-cell {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #eeeeee;
+    -fx-border-width: 0 0 1px 0;
+    -fx-min-height: 50px;
+    -fx-pref-height: 50px;
+}
+
+.planning-table .table-row-cell:odd {
+    -fx-background-color: #f0f5ff;
+}
+
+.planning-table .table-row-cell:hover {
+    -fx-background-color: #e0e8ff;
+}
+
+.planning-table .table-cell {
+    -fx-padding: 8px;
+    -fx-alignment: center-left;
+    -fx-wrap-text: true;
+    -fx-text-overrun: clip;
+    -fx-height: auto;
+}
+
+/* Ajuster les styles spécifiques aux colonnes si nécessaire */
+.planning-table .table-column:nth-child(1) {
+    -fx-alignment: center-left;
+}
+
+.planning-table .table-column:nth-child(2) {
+    -fx-alignment: center;
+}
+
+.planning-table .table-column:nth-child(3) {
+    -fx-alignment: center;
+}
+
+.planning-table .table-column:nth-child(4) {
+    -fx-alignment: center-right;
+}
