@@ -1,19 +1,24 @@
 package modele;
 
 public class Vente {
-    private String vendeur;
-    private String acheteur;
+    private Membre vendeur;
+    private Membre acheteur;
 
-    public Vente(String vendeur, String acheteur) {
+    public Vente(Membre vendeur, Membre acheteur) {
         this.vendeur = vendeur;
         this.acheteur = acheteur;
     }
 
-    public String getVendeur() { return vendeur; }
-    public String getAcheteur() { return acheteur; }
+    public Membre getVendeur() {
+        return vendeur;
+    }
+
+    public Membre getAcheteur() {
+        return acheteur;
+    }
 
     @Override
     public String toString() {
-        return vendeur + " -> " + acheteur;
+        return vendeur.getPseudo() + " -> " + acheteur.getPseudo();
     }
 }

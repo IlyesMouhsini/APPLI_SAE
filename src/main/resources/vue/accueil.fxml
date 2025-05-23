@@ -15,6 +15,7 @@
 
     <ComboBox fx:id="comboScenarios" promptText="Choisir un scénario" prefWidth="200"/>
     <Button text="Charger ce scénario" onAction="#handleChargerScenario"/>
+    <Label fx:id="labelDistance" text="Distance totale : -" />
     <ListView fx:id="listeVentes" prefWidth="300" prefHeight="200"/>
 </VBox>
 

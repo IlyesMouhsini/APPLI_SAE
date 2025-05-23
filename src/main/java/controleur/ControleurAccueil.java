@@ -17,7 +17,14 @@ import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Map;
+import javafx.scene.control.Label;
+import modele.CarteFrance;
 
+
+import modele.Membre;
+import modele.Vente;
+import modele.Scenario;
 
 public class ControleurAccueil {
 
@@ -28,56 +35,58 @@ public class ControleurAccueil {
     private ComboBox<String> comboScenarios;
 
     @FXML
+    private Label labelDistance;
+
+
+    @FXML
     public void initialize() {
-        // Remplir la combo avec les noms des fichiers de /scenarios/
         try {
-            // Récupérer le dossier dans le classpath
-            URI uri = getClass().getResource("/scenarios/").toURI();
-            Path path = Paths.get(uri);
+            URI uri = getClass().getClassLoader().getResource("scenarios").toURI();
+            Path dossierScenarios = Paths.get(uri);
+            List<String> fichiers = new ArrayList<>();
 
-            Files.list(path)
-                    .filter(f -> f.getFileName().toString().endsWith(".txt"))
-                    .forEach(f -> comboScenarios.getItems().add(f.getFileName().toString()));
+            Files.list(dossierScenarios)
+                    .filter(path -> path.toString().endsWith(".txt"))
+                    .forEach(path -> fichiers.add(path.getFileName().toString()));
 
+            comboScenarios.setItems(FXCollections.observableArrayList(fichiers));
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-
     @FXML
-    private void handleChargerScenario() {
-        String nomFichier = comboScenarios.getValue();
-        if (nomFichier == null) return;
+    public void handleChargerScenario(ActionEvent event) {
+        String nomScenario = comboScenarios.getValue();
+        if (nomScenario == null) return;
 
-        List<Vente> ventes = lireScenario("/scenarios/" + nomFichier);
+        try {
+            // Chargement des membres
+            Map<String, Membre> membres = Scenario.chargerMembres("membres_APPLI.txt");
 
-        ObservableList<String> affichage = FXCollections.observableArrayList();
-        for (Vente v : ventes) {
-            affichage.add(v.toString());
-        }
+            // Chargement du scénario sélectionné
+            Scenario scenario = Scenario.chargerDepuisFichier(nomScenario, membres);
 
-        listeVentes.setItems(affichage);
-    }
-
-
-    private List<Vente> lireScenario(String nomFichier) {
-        List<Vente> ventes = new ArrayList<>();
-        try (BufferedReader reader = new BufferedReader(
-                new InputStreamReader(getClass().getResourceAsStream(nomFichier), StandardCharsets.UTF_8))) {
-
-            String ligne;
-            while ((ligne = reader.readLine()) != null) {
-                if (ligne.contains("->")) {
-                    String[] parts = ligne.split("->");
-                    String vendeur = parts[0].trim();
-                    String acheteur = parts[1].trim();
-                    ventes.add(new Vente(vendeur, acheteur));
-                }
+            // Affichage des ventes dans la liste
+            ObservableList<String> affichage = FXCollections.observableArrayList();
+            for (Vente v : scenario.getVentes()) {
+                affichage.add(v.toString());
             }
+            listeVentes.setItems(affichage);
+
+            // Chargement de la carte de France (distances)
+            CarteFrance carte = new CarteFrance("src/main/resources/distances/distances.txt");
+
+            // Calcul de la distance totale du scénario
+            int total = scenario.calculerDistanceTotale(carte);
+
+            // Affichage de la distance dans le label
+            labelDistance.setText("Distance totale : " + total + " km");
+
         } catch (IOException e) {
+            labelDistance.setText("Erreur : " + e.getMessage());
             e.printStackTrace();
         }
-        return ventes;
     }
+
 }
