@@ -20,6 +20,8 @@ import java.nio.file.Paths;
 import java.util.Map;
 import javafx.scene.control.Label;
 import modele.CarteFrance;
+import modele.Graphe;
+
 
 
 import modele.Membre;
@@ -36,6 +38,13 @@ public class ControleurAccueil {
 
     @FXML
     private Label labelDistance;
+
+    @FXML
+    private ListView<String> listeItineraire;
+
+    @FXML
+    private Label labelDistanceHeuristique;
+
 
 
     @FXML
@@ -82,6 +91,16 @@ public class ControleurAccueil {
 
             // Affichage de la distance dans le label
             labelDistance.setText("Distance totale : " + total + " km");
+
+            // Itinéraire heuristique
+            List<String> itineraire = Graphe.calculerItineraireHeuristique(scenario, carte);
+            listeItineraire.setItems(FXCollections.observableArrayList(itineraire));
+
+            int heuristiqueTotal = 0;
+            for (int i = 0; i < itineraire.size() - 1; i++) {
+                heuristiqueTotal += carte.getDistance(itineraire.get(i), itineraire.get(i + 1));
+            }
+            labelDistanceHeuristique.setText("Distance heuristique : " + heuristiqueTotal + " km");
 
         } catch (IOException e) {
             labelDistance.setText("Erreur : " + e.getMessage());

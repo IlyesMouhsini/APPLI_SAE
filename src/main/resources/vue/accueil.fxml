@@ -17,5 +17,10 @@
     <Button text="Charger ce scénario" onAction="#handleChargerScenario"/>
     <Label fx:id="labelDistance" text="Distance totale : -" />
     <ListView fx:id="listeVentes" prefWidth="300" prefHeight="200"/>
+    <Label text="Itinéraire proposé :" />
+    <ListView fx:id="listeItineraire" prefWidth="300" prefHeight="200"/>
+    <Label fx:id="labelDistanceHeuristique" text="Distance heuristique : -" />
+
+
 </VBox>
 

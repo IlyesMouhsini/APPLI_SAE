@@ -19,6 +19,9 @@ public class Vente {
 
     @Override
     public String toString() {
-        return vendeur.getPseudo() + " -> " + acheteur.getPseudo();
+        return vendeur.getPseudo() + " (" + vendeur.getVille() + ")"
+                + " -> "
+                + acheteur.getPseudo() + " (" + acheteur.getVille() + ")";
     }
+
 }
