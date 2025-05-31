@@ -2,97 +2,41 @@ package controleur;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.scene.control.ListView;
-import modele.Vente;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import javafx.scene.control.ComboBox;
-import java.net.URI;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Map;
 import javafx.scene.control.Label;
-import modele.CarteFrance;
-import modele.Graphe;
+import javafx.scene.control.ListView;
+import modele.*;
 
-
-
-import modele.Membre;
-import modele.Vente;
-import modele.Scenario;
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 
 public class ControleurAccueil {
 
-    @FXML
-    private ListView<String> listeVentes;
+    public void chargerScenario(
+            ComboBox<String> comboScenarios,
+            ListView<String> listeVentes,
+            ListView<String> listeItineraire,
+            Label labelDistance,
+            Label labelDistanceHeuristique) {
 
-    @FXML
-    private ComboBox<String> comboScenarios;
-
-    @FXML
-    private Label labelDistance;
-
-    @FXML
-    private ListView<String> listeItineraire;
-
-    @FXML
-    private Label labelDistanceHeuristique;
-
-
-
-    @FXML
-    public void initialize() {
-        try {
-            URI uri = getClass().getClassLoader().getResource("scenarios").toURI();
-            Path dossierScenarios = Paths.get(uri);
-            List<String> fichiers = new ArrayList<>();
-
-            Files.list(dossierScenarios)
-                    .filter(path -> path.toString().endsWith(".txt"))
-                    .forEach(path -> fichiers.add(path.getFileName().toString()));
-
-            comboScenarios.setItems(FXCollections.observableArrayList(fichiers));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    @FXML
-    public void handleChargerScenario(ActionEvent event) {
         String nomScenario = comboScenarios.getValue();
         if (nomScenario == null) return;
 
         try {
-            // Chargement des membres
             Map<String, Membre> membres = Scenario.chargerMembres("membres_APPLI.txt");
-
-            // Chargement du scénario sélectionné
             Scenario scenario = Scenario.chargerDepuisFichier(nomScenario, membres);
 
-            // Affichage des ventes dans la liste
             ObservableList<String> affichage = FXCollections.observableArrayList();
             for (Vente v : scenario.getVentes()) {
                 affichage.add(v.toString());
             }
             listeVentes.setItems(affichage);
 
-            // Chargement de la carte de France (distances)
             CarteFrance carte = new CarteFrance("src/main/resources/distances/distances.txt");
-
-            // Calcul de la distance totale du scénario
             int total = scenario.calculerDistanceTotale(carte);
-
-            // Affichage de la distance dans le label
             labelDistance.setText("Distance totale : " + total + " km");
 
-            // Itinéraire heuristique
             List<String> itineraire = Graphe.calculerItineraireHeuristique(scenario, carte);
             listeItineraire.setItems(FXCollections.observableArrayList(itineraire));
 
@@ -107,5 +51,4 @@ public class ControleurAccueil {
             e.printStackTrace();
         }
     }
-
 }
