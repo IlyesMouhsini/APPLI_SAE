@@ -1,19 +1,18 @@
 package vue;
 
+import controleur.ControleurAccueil;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import modele.*;
-
-import java.io.IOException;
-import java.util.List;
-import java.util.Map;
+import modele.ScenarioUtils;
+import modele.Vente;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 
 public class VueAccueil {
 
@@ -22,6 +21,7 @@ public class VueAccueil {
     private ListView<String> listeItineraire;
     private Label labelDistance;
     private Label labelDistanceHeuristique;
+    private final ControleurAccueil controleur = new ControleurAccueil();
 
     public void start(Stage stage) {
         Label titre = new Label("Bienvenue dans l'application APPLI");
@@ -31,7 +31,16 @@ public class VueAccueil {
         comboScenarios.setItems(FXCollections.observableArrayList(ScenarioUtils.listerScenarios()));
 
         Button boutonCharger = new Button("Charger ce scénario");
-        boutonCharger.setOnAction(e -> chargerScenario());
+        boutonCharger.setOnAction(e -> controleur.chargerScenario(
+                comboScenarios, listeVentes, listeItineraire, labelDistance, labelDistanceHeuristique));
+
+        Button ouvrirEditeur = new Button("Créer / Modifier un scénario");
+        ouvrirEditeur.setOnAction(e -> new VueEditeurScenario().start(new Stage()));
+
+        Button boutonRafraichir = new Button("Rafraîchir la liste");
+        boutonRafraichir.setOnAction(e ->
+                comboScenarios.setItems(FXCollections.observableArrayList(ScenarioUtils.listerScenarios()))
+        );
 
         labelDistance = new Label("Distance totale : -");
         labelDistanceHeuristique = new Label("Distance heuristique : -");
@@ -42,7 +51,7 @@ public class VueAccueil {
         listeItineraire = new ListView<>();
         listeItineraire.setPrefHeight(150);
 
-        VBox layout = new VBox(10, titre, comboScenarios, boutonCharger,
+        VBox layout = new VBox(10, titre, comboScenarios, boutonCharger, ouvrirEditeur, boutonRafraichir,
                 labelDistance, listeVentes,
                 new Label("Itinéraire proposé :"), listeItineraire,
                 labelDistanceHeuristique);
@@ -54,38 +63,5 @@ public class VueAccueil {
         stage.setTitle("APPLI - Livraison de cartes Pokémon");
         stage.setScene(scene);
         stage.show();
-    }
-
-    private void chargerScenario() {
-        String nomScenario = comboScenarios.getValue();
-        if (nomScenario == null) return;
-
-        try {
-            Map<String, Membre> membres = Scenario.chargerMembres("membres_APPLI.txt");
-            Scenario scenario = Scenario.chargerDepuisFichier(nomScenario, membres);
-
-            ObservableList<String> affichage = FXCollections.observableArrayList();
-            for (Vente v : scenario.getVentes()) {
-                affichage.add(v.toString());
-            }
-            listeVentes.setItems(affichage);
-
-            CarteFrance carte = new CarteFrance("src/main/resources/distances/distances.txt");
-            int total = scenario.calculerDistanceTotale(carte);
-            labelDistance.setText("Distance totale : " + total + " km");
-
-            List<String> itineraire = Graphe.calculerItineraireHeuristique(scenario, carte);
-            listeItineraire.setItems(FXCollections.observableArrayList(itineraire));
-
-            int heuristiqueTotal = 0;
-            for (int i = 0; i < itineraire.size() - 1; i++) {
-                heuristiqueTotal += carte.getDistance(itineraire.get(i), itineraire.get(i + 1));
-            }
-            labelDistanceHeuristique.setText("Distance heuristique : " + heuristiqueTotal + " km");
-
-        } catch (IOException e) {
-            labelDistance.setText("Erreur : " + e.getMessage());
-            e.printStackTrace();
-        }
     }
 }
