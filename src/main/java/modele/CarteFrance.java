@@ -49,4 +49,56 @@ public class CarteFrance {
     public List<String> getVilles() {
         return Collections.unmodifiableList(villes);
     }
+
+    // NOUVELLES MÉTHODES AJOUTÉES POUR LE GRAPHE ORIENTÉ
+
+    /**
+     * Retourne la map associant chaque ville à son index
+     * @return Map<String, Integer> ville -> index
+     */
+    public Map<String, Integer> getVilleToIndex() {
+        return Collections.unmodifiableMap(indexVille);
+    }
+
+    /**
+     * Retourne la matrice des distances
+     * @return int[][] matrice des distances
+     */
+    public int[][] getDistances() {
+        // Retourner une copie pour éviter les modifications externes
+        int[][] copie = new int[distances.length][];
+        for (int i = 0; i < distances.length; i++) {
+            copie[i] = distances[i].clone();
+        }
+        return copie;
+    }
+
+    /**
+     * Retourne la map associant chaque index à sa ville (utile pour certains algorithmes)
+     * @return Map<Integer, String> index -> ville
+     */
+    public Map<Integer, String> getIndexToVille() {
+        Map<Integer, String> indexToVille = new HashMap<>();
+        for (Map.Entry<String, Integer> entry : indexVille.entrySet()) {
+            indexToVille.put(entry.getValue(), entry.getKey());
+        }
+        return indexToVille;
+    }
+
+    /**
+     * Vérifie si une ville existe dans la carte
+     * @param ville nom de la ville
+     * @return true si la ville existe, false sinon
+     */
+    public boolean villeExiste(String ville) {
+        return indexVille.containsKey(ville);
+    }
+
+    /**
+     * Retourne le nombre total de villes
+     * @return nombre de villes
+     */
+    public int getNombreVilles() {
+        return villes.size();
+    }
 }

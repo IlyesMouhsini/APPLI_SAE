@@ -7,8 +7,8 @@ import java.util.List;
 public class ScenarioUtils {
 
     public static List<String> listerScenarios() {
-        String basePath = System.getProperty("user.dir");
-        File dossier = new File(basePath + "/scenarios/");
+        String basePath = "src/main/resources/scenarios/";
+        File dossier = new File(basePath);
         List<String> fichiers = new ArrayList<>();
 
         if (dossier.exists() && dossier.isDirectory()) {

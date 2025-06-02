@@ -42,7 +42,7 @@ public class Scenario {
 
     public static Scenario chargerDepuisFichier(String nomFichier, Map<String, Membre> membresMap) throws IOException {
         Scenario scenario = new Scenario();
-        String chemin = System.getProperty("user.dir") + "/scenarios/" + nomFichier;
+        String chemin = "src/main/resources/scenarios/" + nomFichier;
 
         try (BufferedReader br = new BufferedReader(new FileReader(chemin))) {
             String ligne;
