@@ -6,13 +6,11 @@ public class SolutionPartielle {
     private List<String> itineraire;
     private Set<Vente> ventesEffectuees;
     private Set<String> cartesEnTransit;
-    private double distanceParcourue;
 
     public SolutionPartielle() {
         this.itineraire = new ArrayList<>();
         this.ventesEffectuees = new HashSet<>();
         this.cartesEnTransit = new HashSet<>();
-        this.distanceParcourue = 0;
     }
 
     public void ajouterVille(String ville) {
@@ -26,21 +24,23 @@ public class SolutionPartielle {
     public Set<String> getVillesPossibles(List<Vente> ventes) {
         Set<String> possibles = new HashSet<>();
 
-        // Villes où on peut livrer
+        // 1. Priorité aux livraisons en cours (cartes en transit)
         possibles.addAll(cartesEnTransit);
 
-        // Villes où on peut prendre des cartes
+        // 2. Ajouter les villes de ventes NON ENCORE effectuées
         for (Vente vente : ventes) {
             if (!ventesEffectuees.contains(vente)) {
-                possibles.add(vente.getVilleVendeur());
+                possibles.add(vente.getVilleVendeur()); // Ville où prendre les cartes
             }
         }
 
-        return possibles;
-    }
+        // 3. Retirer la ville actuelle si on y est déjà
+        if (!itineraire.isEmpty()) {
+            String villeActuelle = itineraire.get(itineraire.size() - 1);
+            possibles.remove(villeActuelle);
+        }
 
-    public double getDistanceEstimee() {
-        return distanceParcourue; // Simplification - on pourrait ajouter une heuristique
+        return possibles;
     }
 
     public SolutionPartielle copier() {
@@ -48,11 +48,23 @@ public class SolutionPartielle {
         copie.itineraire = new ArrayList<>(this.itineraire);
         copie.ventesEffectuees = new HashSet<>(this.ventesEffectuees);
         copie.cartesEnTransit = new HashSet<>(this.cartesEnTransit);
-        copie.distanceParcourue = this.distanceParcourue;
         return copie;
     }
 
-    // Getters et setters
+    public void mettreAJourEtat(String ville, List<Vente> toutesVentes) {
+        // 1. Récupérer les cartes à vendre depuis cette ville
+        for (Vente vente : toutesVentes) {
+            if (vente.getVilleVendeur().equals(ville) && !ventesEffectuees.contains(vente)) {
+                ventesEffectuees.add(vente);
+                cartesEnTransit.add(vente.getVilleAcheteur());
+            }
+        }
+
+        // 2. Livrer les cartes si on est dans la ville de destination
+        cartesEnTransit.remove(ville);
+    }
+
+    // Getters essentiels
     public List<String> getItineraire() {
         return itineraire;
     }
@@ -63,38 +75,5 @@ public class SolutionPartielle {
 
     public Set<String> getCartesEnTransit() {
         return cartesEnTransit;
-    }
-
-    public double getDistanceParcourue() {
-        return distanceParcourue;
-    }
-
-    public void setDistanceParcourue(double distance) {
-        this.distanceParcourue = distance;
-    }
-
-    public void ajouterVenteEffectuee(Vente vente) {
-        ventesEffectuees.add(vente);
-    }
-
-    public void ajouterCarteEnTransit(String ville) {
-        cartesEnTransit.add(ville);
-    }
-
-    public void retirerCarteEnTransit(String ville) {
-        cartesEnTransit.remove(ville);
-    }
-
-    public void mettreAJourEtat(String ville, List<Vente> toutesVentes) {
-        // Récupérer les cartes à vendre depuis cette ville
-        for (Vente vente : toutesVentes) {
-            if (vente.getVilleVendeur().equals(ville) && !ventesEffectuees.contains(vente)) {
-                ventesEffectuees.add(vente);
-                cartesEnTransit.add(vente.getVilleAcheteur());
-            }
-        }
-
-        // Livrer les cartes si on est dans la ville de destination
-        cartesEnTransit.remove(ville);
     }
 }

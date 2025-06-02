@@ -89,8 +89,18 @@ public class ControleurAccueil {
 
             // ALGORITHME 2 : Solution heuristique
             Solution solutionHeuristique = graphe.algorithmeHeuristique();
-            listeItineraire.setItems(FXCollections.observableArrayList(solutionHeuristique.getItineraire()));
-            labelDistanceHeuristique.setText("Distance heuristique : " +
+            ObservableList<String> affichageItineraire = FXCollections.observableArrayList();
+
+            // Ajouter un en-tête explicatif
+            affichageItineraire.add("=== ITINÉRAIRE HEURISTIQUE ===");
+            affichageItineraire.add("Distance : " + String.format("%.2f", solutionHeuristique.getDistance()) + " km");
+            affichageItineraire.add("Parcours :");
+            affichageItineraire.add(""); // Ligne vide pour séparer
+
+            // Ajouter les villes de l'itinéraire
+            affichageItineraire.addAll(solutionHeuristique.getItineraire());
+
+            listeItineraire.setItems(affichageItineraire);            labelDistanceHeuristique.setText("Distance heuristique : " +
                     String.format("%.2f", solutionHeuristique.getDistance()) + " km");
 
             System.out.println("Calculs terminés avec succès");
@@ -282,14 +292,14 @@ public class ControleurAccueil {
 
             // ALGORITHME 2
             Solution solutionHeuristique = graphe.algorithmeHeuristique();
-            affichageComplet.add("=== ALGORITHME 2 : HEURISTIQUE (Plus proche voisin + 2-opt) ===");
+            affichageComplet.add("=== ALGORITHME 2 : HEURISTIQUE ===");
             affichageComplet.add("Distance: " + String.format("%.2f", solutionHeuristique.getDistance()) + " km");
             affichageComplet.add("Itinéraire: " + String.join(" -> ", solutionHeuristique.getItineraire()));
             affichageComplet.add("");
 
             // ALGORITHME 3
             List<Solution> kMeilleures = graphe.kMeilleuresSolutions(k);
-            affichageComplet.add("=== ALGORITHME 3 : " + k + " MEILLEURES SOLUTIONS (Énumération contrôlée) ===");
+            affichageComplet.add("=== ALGORITHME 3 : " + k + " MEILLEURES SOLUTIONS ===");
             for (int i = 0; i < kMeilleures.size(); i++) {
                 Solution sol = kMeilleures.get(i);
                 affichageComplet.add("Solution " + (i + 1) + ": " +

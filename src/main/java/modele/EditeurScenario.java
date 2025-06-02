@@ -33,7 +33,7 @@ public class EditeurScenario {
 
     public void sauvegarder(String nomFichier) throws IOException {
         String basePath = System.getProperty("user.dir");
-        Path chemin = Paths.get(System.getProperty("user.dir"), "scenarios", nomFichier);
+        Path chemin = Paths.get("src/main/resources/scenarios/" + nomFichier);
         try (BufferedWriter writer = Files.newBufferedWriter(chemin)) {
             for (Vente v : scenario.getVentes()) {
                 writer.write(v.getVendeur().getPseudo() + " -> " + v.getAcheteur().getPseudo());

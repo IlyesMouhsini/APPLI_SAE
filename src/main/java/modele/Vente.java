@@ -24,7 +24,6 @@ public class Vente {
                 + acheteur.getPseudo() + " (" + acheteur.getVille() + ")";
     }
 
-    // Nouvelles méthodes pour compatibilité avec GrapheOriente et SolutionPartielle
     public String getVilleVendeur() {
         return vendeur.getVille();
     }
